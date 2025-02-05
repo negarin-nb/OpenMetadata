@@ -1,0 +1,32 @@
+stages:
+  - install
+  - docker-build
+
+maven-install:
+  stage: install
+  image: $DOCKER_REGISTRY/minimal-ubuntu:latest
+  script:
+    - mvn install
+  artifacts:
+    paths:
+      - openmetadata-dist/target
+  only:
+    refs:
+      - develop
+
+
+docker-build:
+  stage: docker-build
+  image: $DOCKER_REGISTRY/docker:24.0.5
+  dependencies:
+    - maven-install
+  needs: ["maven-install"]
+  script:
+    - docker build --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY --tag $DOCKER_HOST_URL/openmetadata:latest -f docker/development/Dockerfile .
+    - docker login -u=$DOCKER_HOST_USER -p=$DOCKER_HOST_TOKEN $DOCKER_HOST_URL
+    - docker push $DOCKER_HOST_URL/openmetadata:latest
+    - docker rmi -f $DOCKER_HOST_URL/openmetadata:latest
+  only:
+    refs:
+      - develop
+

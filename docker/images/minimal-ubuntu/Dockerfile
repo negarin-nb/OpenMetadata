@@ -12,7 +12,7 @@
 # Dockerfile - minimal-ubuntu
 # usage: docker build -t minimal-ubuntu:0.1 .
 
-FROM ubuntu:xenial-20210416
+FROM ubuntu:24.04
 
 # environment variables
 ENV DEBIAN_FRONTEND=noninteractive
@@ -27,17 +27,20 @@ RUN apt update -y && \
     apt install -y net-tools iputils-ping dnsutils lsof curl wget telnet
 
 # python
-RUN apt install -y python-dev && \
-    curl "https://bootstrap.pypa.io/get-pip.py" -o /tmp/get-pip.py && \
-    python /tmp/get-pip.py
+RUN apt install -y software-properties-common && \
+    add-apt-repository -y ppa:deadsnakes/ppa && \
+    apt update -y && \
+    apt install -y python3.9 python3.9-distutils && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1 && \
+    apt install -y python3-pip
 
 # java
 RUN apt install -y openjdk-17-jdk
 # maven
-#RUN apt install -y maven=3.3.9-3
+RUN apt install -y maven
 
 # supervisord
-RUN pip install supervisor==3.3.3 && \
+RUN pip install supervisor && \
     mkdir -p /var/log/supervisord/
 
 # converts the dash to bash terminal for easy scripting
