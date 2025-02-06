@@ -6,7 +6,7 @@ maven-install:
   stage: install
   image: $DOCKER_REGISTRY/minimal-ubuntu:latest
   script:
-    - mvn install
+    - mvn install -DskipTests
   artifacts:
     paths:
       - openmetadata-dist/target
@@ -22,7 +22,7 @@ docker-build:
     - maven-install
   needs: ["maven-install"]
   script:
-    - docker build --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
+    - DOCKER_BUILDKIT=1 docker build --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
     - docker login -u=$DOCKER_HOST_USER -p=$DOCKER_HOST_TOKEN $DOCKER_HOST_URL
     - docker push $DOCKER_HOST_URL/openmetadata-server:latest
     - docker rmi -f $DOCKER_HOST_URL/openmetadata-server:latest

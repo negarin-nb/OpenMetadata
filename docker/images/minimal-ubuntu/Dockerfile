@@ -39,6 +39,16 @@ RUN apt install -y openjdk-17-jdk
 # maven
 RUN apt install -y maven
 
+# yarn
+RUN apt install -y nodejs && \
+    apt install -y npm && \
+    npm install -y --global yarn
+
+#antlr
+RUN	echo '#!/usr/bin/java -jar' > /usr/local/bin/antlr4 && \
+	curl https://www.antlr.org/download/antlr-4.9.2-complete.jar >> /usr/local/bin/antlr4 && \
+	chmod 755 /usr/local/bin/antlr4
+
 # supervisord
 RUN pip install supervisor && \
     mkdir -p /var/log/supervisord/
