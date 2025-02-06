@@ -274,9 +274,9 @@ jwtTokenConfiguration:
   keyId: ${JWT_KEY_ID:-"Gb389a-9f76-gdjs-a92j-0242bk94356"}
 
 elasticsearch:
-  searchType: ${SEARCH_TYPE:- "elasticsearch"}
-  host: ${ELASTICSEARCH_HOST:-localhost}
-  port: ${ELASTICSEARCH_PORT:-9200}
+  searchType: ${SEARCH_TYPE:- "opensearch"}
+  host: ${ELASTICSEARCH_HOST:-192.168.91.60}
+  port: ${ELASTICSEARCH_PORT:-30920}
   scheme: ${ELASTICSEARCH_SCHEME:-http}
   username: ${ELASTICSEARCH_USER:-""}
   password: ${ELASTICSEARCH_PASSWORD:-""}
