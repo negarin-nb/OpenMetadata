@@ -5,6 +5,8 @@ stages:
 maven-install:
   stage: install
   image: $DOCKER_REGISTRY/minimal-ubuntu:latest
+  tags:
+    - docker-runner
   script:
     - mvn install -DskipTests
   artifacts:
@@ -21,6 +23,8 @@ docker-build:
   dependencies:
     - maven-install
   needs: ["maven-install"]
+  tags:
+    - docker-runner
   script:
     - DOCKER_BUILDKIT=1 docker build --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
     - docker login -u=$DOCKER_HOST_USER -p=$DOCKER_HOST_TOKEN $DOCKER_HOST_URL
