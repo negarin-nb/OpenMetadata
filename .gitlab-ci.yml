@@ -20,7 +20,7 @@ maven-install:
     - mkdir -p $CI_PROJECT_DIR/.m2
     - echo $MAVEN_SETTINGS  > $CI_PROJECT_DIR/.m2/settings.xml
   script:
-    - mvn install -DskipTests
+    - mvn install -DskipTests --settings $CI_PROJECT_DIR/.m2/settings.xml
   artifacts:
     paths:
       - openmetadata-dist/target
