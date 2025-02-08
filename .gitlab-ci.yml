@@ -10,7 +10,7 @@ maven-install:
   cache:
     - key: cache-maven
       paths:
-        - .m2/repository
+        - ~/.m2/repository
   script:
     - mvn install -DskipTests
   artifacts:
