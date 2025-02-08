@@ -7,6 +7,10 @@ maven-install:
   image: $DOCKER_REGISTRY/minimal-ubuntu:latest
   tags:
     - docker-runner
+  cache:
+    - key: cache-maven
+      paths:
+        - .m2/repository
   script:
     - mvn install -DskipTests
   artifacts:
