@@ -17,7 +17,8 @@ maven-install:
       paths:
         - .m2/repository
   before_script:
-    - echo $MAVEN_SETTINGS  > .m2/settings.xml
+    - mkdir -p $CI_PROJECT_DIR/.m2
+    - echo $MAVEN_SETTINGS  > $CI_PROJECT_DIR/.m2/settings.xml
   script:
     - mvn install -DskipTests
   artifacts:
