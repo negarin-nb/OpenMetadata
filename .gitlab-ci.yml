@@ -24,13 +24,21 @@ maven-install:
 docker-build:
   stage: docker-build
   image: $DOCKER_REGISTRY/docker:24.0.5
+  services:
+    - name: docker:dind
+      command: ["--tls=false"]
+  variables:
+    DOCKER_HOST: "tcp://docker:2375"
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+    DOCKER_BUILDKIT: 1
   dependencies:
     - maven-install
   needs: ["maven-install"]
   tags:
     - docker-runner
   script:
-    - DOCKER_BUILDKIT=1 docker build --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
+    - docker build --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
     - docker login -u=$DOCKER_HOST_USER -p=$DOCKER_HOST_TOKEN $DOCKER_HOST_URL
     - docker push $DOCKER_HOST_URL/openmetadata-server:latest
     - docker rmi -f $DOCKER_HOST_URL/openmetadata-server:latest
