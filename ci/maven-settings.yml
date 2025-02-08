@@ -1,0 +1,40 @@
+variables:
+  MAVEN_SETTINGS: "<settings>
+      <servers>
+            <server>
+                  <id>$MAVEN_REPO_ID</id>
+                  <username>$MAVEN_USERNAME</username>
+                  <password>$MAVEN_PASSWORD</password>
+            </server>
+      </servers>
+      <mirrors>
+            <mirror>
+                  <id>central</id>
+                  <mirrorOf>*</mirrorOf>
+                  <name>Internal Repo</name>
+                  <url>$MAVEN_URL</url>
+            </mirror>
+      </mirrors>
+
+      <profiles>
+        <profile>
+          <id>allow-snapshots</id>
+          <activation>
+            <activeByDefault>true</activeByDefault>
+          </activation>
+          <repositories>
+            <repository>
+              <id>snapshots-repo</id>
+              <url>$MAVEN_URL</url>
+              <releases>
+                <enabled>false</enabled>
+              </releases>
+              <snapshots>
+                <enabled>true</enabled>
+              </snapshots>
+            </repository>
+          </repositories>
+        </profile>
+      </profiles>
+</settings>"
+

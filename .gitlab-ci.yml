@@ -1,3 +1,6 @@
+include:
+  - local: 'ci/maven-settings.yml'
+
 stages:
   - install
   - docker-build
@@ -7,10 +10,14 @@ maven-install:
   image: $DOCKER_REGISTRY/minimal-ubuntu:latest
   tags:
     - docker-runner
+  variables:
+    MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
   cache:
     - key: cache-maven
       paths:
-        - ~/.m2/repository
+        - .m2/repository
+  before_script:
+    - echo $MAVEN_SETTINGS  > ~/.m2/settings.xml
   script:
     - mvn install -DskipTests
   artifacts:
