@@ -16,8 +16,9 @@ import { useTranslation } from 'react-i18next';
 import { useApplicationStore } from '../../hooks/useApplicationStore';
 
 const AntDConfigProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const { i18n } = useTranslation();
   const { applicationConfig } = useApplicationStore();
+  const { i18n } = useTranslation();
+  const isRtl = i18n.language === 'pr-PR';
 
   ConfigProvider.config({
     theme: {
@@ -25,7 +26,11 @@ const AntDConfigProvider: FC<{ children: ReactNode }> = ({ children }) => {
     },
   });
 
-  return <ConfigProvider direction={i18n.dir()}>{children}</ConfigProvider>;
+  return (
+    <ConfigProvider direction={isRtl ? 'rtl' : 'ltr'}>
+      {children}
+    </ConfigProvider>
+  );
 };
 
 export default AntDConfigProvider;

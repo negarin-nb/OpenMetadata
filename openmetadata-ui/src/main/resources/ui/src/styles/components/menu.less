@@ -86,3 +86,20 @@
     font-weight: 400;
   }
 }
+.custom-menu-rtl.ant-menu-root.ant-menu-inline {
+  background: @white;
+  border: 0px;
+  margin-top: 16px;
+
+  .ant-menu-item::after {
+    right: 0;
+    left: unset;
+  }
+
+  .ant-menu-item {
+    height: 50px;
+    line-height: 30px;
+    margin-top: 2px;
+    padding: 0 16px !important;
+  }
+}

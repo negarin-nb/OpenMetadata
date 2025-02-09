@@ -2461,6 +2461,10 @@
   resolved "https://registry.yarnpkg.com/@fontsource/source-code-pro/-/source-code-pro-5.0.0.tgz#6c6bebe3fea37bd411aaa01c04f7e8e101cb7f34"
   integrity sha512-2EqSMEfE3tt5x8RscAhiV3Ub8ObdzlOJS+6oRcecF1+PHIrk4nYK97f6+gKEBvVxZyMDSMyWweYVj2Yqngx2TQ==
 
+"@fontsource/vazir@^4.5.4":
+  version "4.5.4"
+  resolved "https://registry.yarnpkg.com/@fontsource/vazir/-/vazir-4.5.4.tgz#0d2d0d7904c0be1aa1ff38dba72d316129532fdb"
+  integrity sha512-PnQwwPf9JDnCHHLx55c9QHBfPSQY4VOqhGTTQ0jUkAAJOW66gE6aCOKZGGANd5e3u95LGXEzzt6E0GZXVUv0cg==
 "@github/g-emoji-element@^1.1.5":
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/@github/g-emoji-element/-/g-emoji-element-1.1.5.tgz#4fd6b20caf49b88705cf3365d1d1f00a69dfa29a"

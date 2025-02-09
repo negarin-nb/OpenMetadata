@@ -276,6 +276,29 @@ h2.rotated-header {
     width: 16px;
   }
 }
+.collapse-button-rtl {
+  position: absolute;
+  top: 8px;
+  left: 24px;
+  padding: 4px 8px;
+  z-index: 10 !important;
+  background: white !important;
+  .collapse-icon {
+    vertical-align: middle;
+    width: 16px;
+  }
+}
+.collapse-button-rtl.collapsed {
+  position: absolute;
+  top: 8px;
+  right: auto;
+  left: -16px;
+  padding: 4px 12px;
+  .collapse-icon {
+    margin-left: 4px;
+    width: 20px;
+  }
+}
 .collapse-button.collapsed {
   position: absolute;
   top: 8px;
@@ -295,4 +318,10 @@ h2.rotated-header {
 .left-panel-collapse-button.collapsed {
   right: initial;
   left: -16px;
+}
+
+.left-panel-collapse-button-rtl.collapsed {
+  left: initial;
+  right: -16px;
+  //z-index: 10 !important;
 }

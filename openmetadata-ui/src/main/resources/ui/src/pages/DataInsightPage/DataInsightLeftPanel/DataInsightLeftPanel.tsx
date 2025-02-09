@@ -13,6 +13,7 @@
 
 import { Menu, MenuProps } from 'antd';
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory, useParams } from 'react-router-dom';
 import LeftPanelCard from '../../../components/common/LeftPanelCard/LeftPanelCard';
 import { DataInsightTabs } from '../../../interface/data-insight.interface';
@@ -21,8 +22,9 @@ import DataInsightClassBase from '../DataInsightClassBase';
 
 const DataInsightLeftPanel = () => {
   const { tab } = useParams<{ tab: DataInsightTabs }>();
-
+  const { i18n } = useTranslation();
   const history = useHistory();
+  const isRtl = i18n.language === 'pr-PR';
 
   const menuItems: MenuProps['items'] = useMemo(() => {
     const data = DataInsightClassBase.getLeftSideBar();
@@ -45,7 +47,9 @@ const DataInsightLeftPanel = () => {
   return (
     <LeftPanelCard id="data-insight">
       <Menu
-        className="data-insight-left-panel"
+        className={
+          isRtl ? 'data-insight-left-panel-rtl' : 'data-insight-left-panel'
+        }
         data-testid="data-insight-left-panel"
         items={menuItems}
         mode="inline"

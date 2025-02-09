@@ -501,7 +501,7 @@ const NavBar = ({
               suffix={
                 <span className="d-flex items-center">
                   <CmdKIcon />
-                  <span className="cursor-pointer m-b-xs m-l-sm w-4 h-4 text-center">
+                  <span className="cursor-pointer m-b-xs m-x-xs w-4 h-4 text-center">
                     {searchValue ? (
                       <Icon
                         alt="icon-cancel"
