@@ -33,7 +33,7 @@ docker-build:
   stage: docker-build
   image: $DOCKER_REGISTRY/docker:24.0.5
   services:
-    - name: docker:dind
+    - name: $DOCKER_REGISTRY/docker:dind
       command: ["--tls=false"]
   variables:
     DOCKER_HOST: "tcp://docker:2375"
