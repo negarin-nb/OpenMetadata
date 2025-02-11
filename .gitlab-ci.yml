@@ -32,9 +32,9 @@ stages:
 docker-build:
   stage: install
   image: $DOCKER_REGISTRY/docker:24.0.5
-  # services:
-  #   - name: $DOCKER_REGISTRY/docker:dind
-  #     command: ["--tls=false"]
+  services:
+    - name: $DOCKER_REGISTRY/docker:dind
+      command: ["--tls=false"]
   variables:
     # DOCKER_HOST: $DOCKER_HOST_URL
     DOCKER_TLS_CERTDIR: ""
