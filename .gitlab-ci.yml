@@ -48,9 +48,9 @@ docker-build:
     - docker-runner
   script:
     # - unset DOCKER_HOST
-    - sudo systemctl status docker
-    - sudo cat /lib/systemd/system/docker.service
-    - sudo ss -tulpn | grep dockerd
+    - systemctl status docker
+    - cat /lib/systemd/system/docker.service
+    - ss -tulpn | grep dockerd
     - echo $DOCKER_HOST
     - docker info
     - docker build --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
