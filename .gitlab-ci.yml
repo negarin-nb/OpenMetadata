@@ -36,7 +36,7 @@ docker-build:
     - name: $DOCKER_REGISTRY/docker:24.0.5-dind
       command: ["--tls=false"]
   variables:
-    DOCKER_HOST: "tcp://docker:2375"
+    DOCKER_HOST: "tcp://localhost:2375"
     # DOCKER_HOST: $DOCKER_HOST_URL
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
