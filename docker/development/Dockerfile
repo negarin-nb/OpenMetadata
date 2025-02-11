@@ -10,8 +10,7 @@
 #  limitations under the License.
 
 # Build stage
-ARG DOCKER_REGISTRY
-FROM ${DOCKER_REGISTRY}/alpine:3 AS build
+FROM repo.nta.local:9801/alpine:3 AS build
 
 COPY openmetadata-dist/target/openmetadata-*.tar.gz /
 
@@ -20,7 +19,7 @@ RUN mkdir -p /opt/openmetadata && \
     rm openmetadata-*.tar.gz
 
 # Final stage
-FROM ${DOCKER_REGISTRY}/alpine:3
+FROM repo.nta.local:9801/alpine:3
 
 EXPOSE 8585
 
