@@ -40,9 +40,9 @@ docker-build:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
     DOCKER_BUILDKIT: 1
-  dependencies:
-    - maven-install
-  needs: ["maven-install"]
+  # dependencies:
+  #   - maven-install
+  # needs: ["maven-install"]
   tags:
     - docker-runner
   script:
