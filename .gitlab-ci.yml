@@ -3,7 +3,7 @@ include:
 
 stages:
   - install
-  - docker-build
+  # - docker-build
 
 maven-install:
   stage: install
@@ -30,7 +30,7 @@ maven-install:
 
 
 docker-build:
-  stage: docker-build
+  stage: install
   image: $DOCKER_REGISTRY/docker:24.0.5
   services:
     - name: $DOCKER_REGISTRY/docker:dind
