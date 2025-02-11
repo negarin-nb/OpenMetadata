@@ -33,11 +33,10 @@ docker-build:
   stage: install
   image: $DOCKER_REGISTRY/docker:24.0.5
   services:
-    - name: $DOCKER_REGISTRY/docker:24.0.5-dind
+    - name: $DOCKER_REGISTRY/docker:dind
       command: ["--tls=false"]
   variables:
-    DOCKER_HOST: "tcp://localhost:2375"
-    # DOCKER_HOST: $DOCKER_HOST_URL
+    DOCKER_HOST: $DOCKER_HOST_URL
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
     DOCKER_BUILDKIT: 1
@@ -47,9 +46,6 @@ docker-build:
   tags:
     - docker-runner
   script:
-    # - unset DOCKER_HOST
-    - cat /lib/systemd/system/docker.service
-    - ss -tulpn | grep dockerd
     - echo $DOCKER_HOST
     - docker info
     - docker build --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
