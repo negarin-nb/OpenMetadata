@@ -48,7 +48,6 @@ docker-build:
     - docker-runner
   script:
     # - unset DOCKER_HOST
-    - systemctl status docker
     - cat /lib/systemd/system/docker.service
     - ss -tulpn | grep dockerd
     - echo $DOCKER_HOST
