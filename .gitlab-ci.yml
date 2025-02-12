@@ -32,10 +32,10 @@ stages:
 docker-build:
   stage: install
   image: $DOCKER_REGISTRY/docker:24.0.5
-  services:
-    - name: $DOCKER_REGISTRY/docker:dind
-      command: ["--tls=false"]
-      alias: docker
+  # services:
+  #   - name: $DOCKER_REGISTRY/docker:dind
+  #     command: ["--tls=false"]
+  #     alias: docker
   variables:
     # DOCKER_HOST: $DOCKER_HOST_URL
     DOCKER_TLS_CERTDIR: ""
@@ -47,7 +47,7 @@ docker-build:
   tags:
     - docker-runner
   script:
-    - docker build --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
+    - docker build --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
     - docker login -u=$DOCKER_HOST_USER -p=$DOCKER_HOST_TOKEN $DOCKER_HOST_URL
     - docker push $DOCKER_HOST_URL/openmetadata-server:latest
     - docker rmi -f $DOCKER_HOST_URL/openmetadata-server:latest
