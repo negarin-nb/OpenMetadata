@@ -38,7 +38,7 @@ const CmdKIcon = () => {
       <KButton
         data-testid="k-button"
         style={{
-          marginLeft: '4px',
+          margin: '4px',
           backgroundColor: 'white',
         }}
       />

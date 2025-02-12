@@ -33,7 +33,8 @@ import { DataQualityPageTabs } from './DataQualityPage.interface';
 import DataQualityProvider from './DataQualityProvider';
 
 const DataQualityPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language === 'pr-PR';
   const { tab: activeTab } = useParams<{ tab: DataQualityPageTabs }>();
   const history = useHistory();
 
@@ -79,7 +80,12 @@ const DataQualityPage = () => {
           children: (
             <LeftPanelCard id="data-quality">
               <Menu
-                className="custom-menu custom-menu-with-description data-quality-page-left-panel-menu"
+                className={
+                  isRtl
+                    ? 'custom-menu-rtl'
+                    : 'custom-menu' +
+                      'custom-menu-with-description data-quality-page-left-panel-menu'
+                }
                 data-testid="tabs"
                 items={menuItems}
                 mode="inline"

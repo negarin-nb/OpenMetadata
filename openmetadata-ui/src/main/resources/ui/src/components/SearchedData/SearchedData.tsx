@@ -16,6 +16,7 @@ import classNames from 'classnames';
 import { isNumber } from 'lodash';
 import Qs from 'qs';
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PAGE_SIZE } from '../../constants/constants';
 import { MAX_RESULT_HITS } from '../../constants/explore.constants';
 import { ELASTICSEARCH_ERROR_PLACEHOLDER_TYPE } from '../../enums/common.enum';
@@ -46,6 +47,8 @@ const SearchedData: React.FC<SearchedDataProps> = ({
   handleSummaryPanelDisplay,
   filter,
 }) => {
+  const { i18n } = useTranslation();
+  const isRtl = i18n.language === 'pr-PR';
   const searchResultCards = useMemo(() => {
     return data.map(({ _source: table, highlight }, index) => {
       const matches = highlight
@@ -62,7 +65,9 @@ const SearchedData: React.FC<SearchedDataProps> = ({
           <ExploreSearchCard
             className={classNames(
               table.id === selectedEntityId && isSummaryPanelVisible
-                ? 'highlight-card'
+                ? isRtl
+                  ? 'highlight-card-rtl'
+                  : 'highlight-card'
                 : ''
             )}
             handleSummaryPanelDisplay={handleSummaryPanelDisplay}

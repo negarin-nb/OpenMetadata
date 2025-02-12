@@ -29,7 +29,8 @@ const ResizablePanels: React.FC<ResizablePanelsProps> = ({
   pageTitle,
   hideSecondPanel = false,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language === 'pr-PR';
   const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(false);
 
   const handleCollapse = () => {
@@ -40,7 +41,7 @@ const ResizablePanels: React.FC<ResizablePanelsProps> = ({
     <>
       {pageTitle && <DocumentTitle title={pageTitle} />}
       <ReflexContainer
-        className={classNames(className, 'bg-white resizable-panels-layout')}
+        className={classNames(className, 'bg-white , resizable-panels-layout')}
         orientation={orientation}>
         <ReflexElement
           className={classNames(firstPanel.className, 'resizable-first-panel', {
@@ -69,9 +70,13 @@ const ResizablePanels: React.FC<ResizablePanelsProps> = ({
               isRightPanelCollapsed ? t('label.expand') : t('label.collapse')
             }>
             <Button
-              className={classNames('collapse-button', {
-                collapsed: isRightPanelCollapsed,
-              })}
+              className={classNames(
+                { 'collapse-button': !isRtl },
+                { 'collapse-button-rtl': isRtl },
+                {
+                  collapsed: isRightPanelCollapsed,
+                }
+              )}
               data-testid="collapse-button"
               type="ghost"
               onClick={handleCollapse}>
