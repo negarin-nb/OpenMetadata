@@ -50,7 +50,7 @@ docker-build:
       else
         IMAGE_TAG="$CI_COMMIT_REF_NAME"
       fi
-    - echo "Building and pushing image with tag: $IMAGE_TAG"
+    - echo $IMAGE_TAG
     - docker build --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY --tag $DOCKER_HOST_URL/openmetadata-server:$IMAGE_TAG -f docker/development/Dockerfile .
     - docker login -u=$DOCKER_HOST_USER -p=$DOCKER_HOST_TOKEN $DOCKER_HOST_URL
     - docker push $DOCKER_HOST_URL/openmetadata-server:$IMAGE_TAG
