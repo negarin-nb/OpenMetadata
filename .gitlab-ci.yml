@@ -35,6 +35,7 @@ docker-build:
   services:
     - name: $DOCKER_REGISTRY/docker:dind
       command: ["--tls=false"]
+      alias: docker
   variables:
     # DOCKER_HOST: $DOCKER_HOST_URL
     DOCKER_TLS_CERTDIR: ""
@@ -46,8 +47,6 @@ docker-build:
   tags:
     - docker-runner
   script:
-    - unset DOCKER_HOST    
-    - docker info
     - docker build --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
     - docker login -u=$DOCKER_HOST_USER -p=$DOCKER_HOST_TOKEN $DOCKER_HOST_URL
     - docker push $DOCKER_HOST_URL/openmetadata-server:latest
