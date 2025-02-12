@@ -27,6 +27,7 @@ maven-install:
   only:
     refs:
       - develop
+      - feature/**
 
 
 docker-build:
@@ -50,4 +51,5 @@ docker-build:
   only:
     refs:
       - develop
+      - feature/**
 
