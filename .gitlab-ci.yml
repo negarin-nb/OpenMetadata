@@ -63,6 +63,8 @@ docker-build:
 deploy-master:
   image: $DOCKER_REGISTRY/argoproj/argocd
   stage: deployment
+  tags:
+    - docker-runner
   only:
     refs:
       - develop
