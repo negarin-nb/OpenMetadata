@@ -323,7 +323,7 @@ const ExploreV1: React.FC<ExploreProps> = ({
                             data-testid="show-deleted"
                             onChange={onChangeShowDeleted}
                           />
-                          <Typography.Text className="p-l-xs text-grey-muted">
+                          <Typography.Text className="p-x-xs text-grey-muted">
                             {t('label.deleted')}
                           </Typography.Text>
                         </span>
