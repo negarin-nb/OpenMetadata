@@ -17,6 +17,7 @@ import { useApplicationStore } from '../../hooks/useApplicationStore';
 
 const AntDConfigProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { i18n } = useTranslation();
+  const isRtl = i18n.language === 'pr-PR';
   const { applicationConfig } = useApplicationStore();
 
   ConfigProvider.config({
@@ -25,7 +26,7 @@ const AntDConfigProvider: FC<{ children: ReactNode }> = ({ children }) => {
     },
   });
 
-  return <ConfigProvider direction={i18n.dir()}>{children}</ConfigProvider>;
+  return <ConfigProvider direction={isRtl ? 'rtl' : 'ltr'}>{children}</ConfigProvider>;
 };
 
 export default AntDConfigProvider;

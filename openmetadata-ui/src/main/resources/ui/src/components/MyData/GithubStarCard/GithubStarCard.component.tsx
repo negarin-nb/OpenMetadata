@@ -37,7 +37,8 @@ import './github-star-card.style.less';
 const cookieStorage = new CookieStorage();
 
 const GithubStarCard = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language === 'pr-PR';
   const location = useCustomLocation();
   const { currentUser } = useApplicationStore();
   const [showGithubStarPopup, setShowGithubStarPopup] = useState(false);
@@ -123,6 +124,7 @@ const GithubStarCard = () => {
           ? 'github-star-popup-card-with-alert'
           : 'github-star-popup-card-without-alert'
       }
+           ${isRtl && 'github-star-popup-card-rtl'}
       `}>
       <Card data-testid="github-star-popup-card">
         <Space align="center" className="d-flex justify-between">

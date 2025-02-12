@@ -35,17 +35,19 @@ import {
   getNestedKeysFromNavigationItems,
 } from '../../../utils/CustomizaNavigation/CustomizeNavigation';
 import BrandImage from '../../common/BrandImage/BrandImage';
+import './left-sidebar-rtl.less';
 import './left-sidebar.less';
 import { LeftSidebarItem as LeftSidebarItemType } from './LeftSidebar.interface';
 import LeftSidebarItem from './LeftSidebarItem.component';
 
 const LeftSidebar = () => {
   const location = useCustomLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { onLogoutHandler } = useApplicationStore();
   const [showConfirmLogoutModal, setShowConfirmLogoutModal] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(true);
   const { selectedPersona } = useApplicationStore();
+  const isRtl = i18n.language === 'pr-PR';
 
   const { currentPersonaDocStore, setCurrentPersonaDocStore } =
     useCustomizeStore();
@@ -126,14 +128,21 @@ const LeftSidebar = () => {
   return (
     <div
       className={classNames(
-        'd-flex flex-col justify-between h-full left-sidebar-container',
-        { 'sidebar-open': !isSidebarCollapsed }
+        'd-flex flex-col justify-between h-full',
+        { 'sidebar-open-rtl': !isSidebarCollapsed && isRtl },
+        { 'sidebar-open': !isSidebarCollapsed && !isRtl },
+        { 'left-sidebar-container-rtl': isRtl },
+        { 'left-sidebar-container': !isRtl }
       )}
       data-testid="left-sidebar"
       onMouseLeave={handleMouseOut}
       onMouseOver={handleMouseOver}>
       <Row className="p-b-sm">
-        <Col className="brand-logo-container" span={24}>
+        <Col
+          className={
+            isRtl ? 'brand-logo-container-rtl' : 'brand-logo-container'
+          }
+          span={24}>
           <Link className="flex-shrink-0" id="openmetadata_logo" to="/">
             <BrandImage
               alt="OpenMetadata Logo"

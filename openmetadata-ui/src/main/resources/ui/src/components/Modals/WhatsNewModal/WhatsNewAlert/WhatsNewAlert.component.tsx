@@ -27,7 +27,8 @@ import WhatsNewModal from '../WhatsNewModal';
 const cookieStorage = new CookieStorage();
 
 const WhatsNewAlert = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language === 'pr-PR';
   const location = useCustomLocation();
   const { isFirstTimeUser } = useAuth();
   const [showWhatsNew, setShowWhatsNew] = useState({
@@ -79,7 +80,10 @@ const WhatsNewAlert = () => {
   return (
     <>
       {showWhatsNew.alert && isHomePage && (
-        <Affix className="whats-new-alert-container">
+        <Affix
+        className={`whats-new-alert-container 
+             ${isRtl && 'whats-new-alert-container-rtl'}
+        `}>
           <Card className="cursor-pointer" data-testid="whats-new-alert-card">
             <Space align="start" className="d-flex justify-between">
               <Typography.Text

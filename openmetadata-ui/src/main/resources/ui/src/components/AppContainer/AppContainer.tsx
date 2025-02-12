@@ -13,7 +13,7 @@
  */
 import { Layout } from 'antd';
 import classNames from 'classnames';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLimitStore } from '../../context/LimitsProvider/useLimitsStore';
 import { LineageSettings } from '../../generated/configuration/lineageSettings';
@@ -36,7 +36,7 @@ const AppContainer = () => {
   const { applications } = useApplicationsProvider();
   const AuthenticatedRouter = applicationRoutesClass.getRouteElements();
   const ApplicationExtras = applicationsClassBase.getApplicationExtension();
-  const isDirectionRTL = useMemo(() => i18n.dir() === 'rtl', [i18n]);
+  const isRtl = i18n.language === 'pr-PR';
   const { setConfig, bannerDetails } = useLimitStore();
 
   const fetchAppConfigurations = useCallback(async () => {
@@ -78,9 +78,12 @@ const AppContainer = () => {
           ['extra-banner']: Boolean(bannerDetails),
         })}>
         <Sider
-          className={classNames('left-sidebar-col', {
-            'left-sidebar-col-rtl': isDirectionRTL,
-          })}
+          className={classNames(
+            { 'left-sidebar-col': !isRtl },
+            {
+              'left-sidebar-col-rtl': isRtl,
+            }
+          )}
           width={60}>
           <LeftSidebar />
         </Sider>

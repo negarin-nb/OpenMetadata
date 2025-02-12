@@ -29,7 +29,8 @@ const ResizableLeftPanels: React.FC<ResizablePanelsLeftProps> = ({
   pageTitle,
   hideFirstPanel = false,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language === 'pr-PR';
   const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(false);
 
   const handleCollapse = () => {
@@ -73,7 +74,8 @@ const ResizableLeftPanels: React.FC<ResizablePanelsLeftProps> = ({
             }>
             <Button
               className={classNames(
-                'collapse-button left-panel-collapse-button',
+                { 'collapse-button left-panel-collapse-button': !isRtl },
+                { 'collapse-button-rtl left-panel-collapse-button-rtl': isRtl },
                 {
                   collapsed: isLeftPanelCollapsed,
                 }
