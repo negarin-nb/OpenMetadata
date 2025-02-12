@@ -47,7 +47,7 @@ docker-build:
   tags:
     - docker-runner
   script:
-    - docker build --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
+    - docker build --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
     - docker login -u=$DOCKER_HOST_USER -p=$DOCKER_HOST_TOKEN $DOCKER_HOST_URL
     - docker push $DOCKER_HOST_URL/openmetadata-server:latest
     - docker rmi -f $DOCKER_HOST_URL/openmetadata-server:latest
