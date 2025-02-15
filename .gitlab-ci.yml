@@ -2,58 +2,82 @@ include:
   - local: 'ci/maven-settings.yml'
 
 stages:
-  - install
-  # - docker-build
+  - maven-install
+  - docker-build
+  - deployment
 
-# maven-install:
-#   stage: install
-#   image: $DOCKER_REGISTRY/minimal-ubuntu:latest
-#   tags:
-#     - docker-runner
-#   variables:
-#     MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
-#   cache:
-#     - key: cache-maven
-#       paths:
-#         - .m2/repository
-#   before_script:
-#     - mkdir -p $CI_PROJECT_DIR/.m2
-#     - echo $MAVEN_SETTINGS  > $CI_PROJECT_DIR/.m2/settings.xml
-#   script:
-#     - mvn install -DskipTests --settings $CI_PROJECT_DIR/.m2/settings.xml
-#   artifacts:
-#     paths:
-#       - openmetadata-dist/target
-#   only:
-#     refs:
-#       - develop
-
+maven-install:
+  stage: maven-install
+  image: $DOCKER_REGISTRY/minimal-ubuntu:latest
+  tags:
+    - docker-runner
+  variables:
+    MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  cache:
+    - key: cache-maven
+      paths:
+        - .m2/repository
+  before_script:
+    - mkdir -p $CI_PROJECT_DIR/.m2
+    - echo $MAVEN_SETTINGS  > $CI_PROJECT_DIR/.m2/settings.xml
+  script:
+    - mvn install -DskipTests --settings $CI_PROJECT_DIR/.m2/settings.xml
+  artifacts:
+    paths:
+      - openmetadata-dist/target
+  only:
+    refs:
+      - develop
+      - tags
 
 docker-build:
-  stage: install
+  stage: docker-build
   image: $DOCKER_REGISTRY/docker:24.0.5
-  # services:
-  #   - name: $DOCKER_REGISTRY/docker:dind
-  #     command: ["--tls=false"]
-  #     alias: docker
   variables:
-    # DOCKER_HOST: $DOCKER_HOST_URL
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
     DOCKER_BUILDKIT: 1
-  # dependencies:
-  #   - maven-install
-  # needs: ["maven-install"]
+  dependencies:
+    - maven-install
+  needs: ["maven-install"]
   tags:
     - docker-runner
   script:
     - unset DOCKER_HOST
-    # - docker info
-    - docker build --tag $DOCKER_HOST_URL/openmetadata-server:latest -f docker/development/Dockerfile .
+    - |
+      if [[ "$CI_COMMIT_REF_NAME" == "develop" ]]; then
+        IMAGE_TAG="latest"
+      else
+        IMAGE_TAG="$CI_COMMIT_REF_NAME"
+      fi
+    - echo $IMAGE_TAG
+    - docker build --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY --tag $DOCKER_HOST_URL/openmetadata-server:$IMAGE_TAG -f docker/development/Dockerfile .
     - docker login -u=$DOCKER_HOST_USER -p=$DOCKER_HOST_TOKEN $DOCKER_HOST_URL
-    - docker push $DOCKER_HOST_URL/openmetadata-server:latest
-    - docker rmi -f $DOCKER_HOST_URL/openmetadata-server:latest
+    - docker push $DOCKER_HOST_URL/openmetadata-server:$IMAGE_TAG
+    - docker rmi -f $DOCKER_HOST_URL/openmetadata-server:$IMAGE_TAG
   only:
     refs:
       - develop
+      - tags
+
+deploy-master:
+  image: $DOCKER_REGISTRY/argoproj/argocd
+  stage: deployment
+  tags:
+    - docker-runner
+  only:
+    refs:
+      - develop
+  dependencies:
+    - docker-build
+  before_script:
+    - echo "ARGOCD_SERVER:$ARGOCD_SERVER"
+    - echo "ARGOCD_APP_NAME:$ARGOCD_APP_NAME"
+    - echo "ARGOCD_USERNAME:$ARGOCD_USERNAME"
+  script:
+    - echo 'y' | argocd login "${ARGOCD_SERVER}" --username $ARGOCD_USERNAME --password  $ARGOCD_PASSWORD
+    - argocd app actions run "$ARGOCD_APP_NAME" restart --kind Deployment --grpc-web --resource-name $PROJECT_NAME |& tee response.txt
+    - argocd app wait "$ARGOCD_APP_NAME"  --grpc-web --resource apps:Deployment:$PROJECT_NAME --health
+    - cat response.txt
+    - if [ -s response.txt ]; then exit 1; fi
 
